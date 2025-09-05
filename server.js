@@ -65,7 +65,7 @@ const novoBruxo = {
     varinha: varinha,
     mascote,
     patrono,
-    especialidade: especialidade || "Ainda não aribuido!",
+    especialidade: especialidade || "Ainda não atribuido!",
     vivo: vivo
 };
 
@@ -97,6 +97,32 @@ app.get("/varinhas", (req, res) => {
     });
 });
 
+app.post("/varinhas", (req, res) => {
+    const {material, nucleo, comprimento} = req.body;
+
+    if (material || !nucleo || !comprimento) {
+        return res.status(400).json({
+            success: false,
+            menssage: "Material, nucleo e comprimento sao obrigatórios!",
+        });
+    }})
+
+    const novaVarinha = {
+        id: varinhas.length + 1,
+        material,
+        nucleo,
+        comprimento
+    }
+
+    varinhas.push (novaVarinha);
+
+    res.status(200).json({
+        success: true,
+        message: "Nova varinha adicionada"
+        data: novaVarinha
+    })
+
+    
 // Listar pocoes com  filtro (query)
 app.get("/pocoes", (req, res) => {
     const { nome, efeito } = req.query;
@@ -115,6 +141,8 @@ app.get("/pocoes", (req, res) => {
         data: resultado,
     });
 });
+
+
 
 // Listar animais com filtro (query)
 app.get("/animais", (req, res) => {
